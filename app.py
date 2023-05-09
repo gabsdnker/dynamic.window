@@ -11,6 +11,7 @@ class User(db.Model):
     name = db.Column(db.String(50))
     idade = db.Column(db.Integer)
 
+
 @app.route('/')
 def index():
 
