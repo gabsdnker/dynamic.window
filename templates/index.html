@@ -1,35 +1,54 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.css">
-        <link rel="stylesheet" href="../static/style.css">
-        <title>Bem Vindo</title>
-   
-    </head>
 
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem Vindo</title>
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+
+<body>
+    <aside id="header">
         <div class="formularios container">
-            <!--Casdastrar Pessoa-->
-            <h1>Insira os dados: </h1>
-            <form name="cadastrar" method="post" action="/cadastrar">
-                <label for="nome">Nome</label>
-                <input type="text" name="nome" placeholder="Insira o Nome:">
+            <nav>
+                <ul class="nav flex-column">
+                    <li class="dropdown">
+                        <button>Cadastrar Usuário</button>
+                        <div class="dropdown-content">
+                            <h5>Insira os dados:</h5>
+                            <form name="cadastrar" method="post" action="/cadastrar">
+                                <label for="nome">Nome:</label>
+                                <input type="text" name="nome" placeholder="Insira o Nome" required>
+                                <br><br>
+                                <label for="idade">Idade:</label>
+                                <input type="text" name="idade" placeholder="Insira a Idade" required>
+                                <br><br>
+                                <button type="submit">Cadastrar</button>
+                            </form>
 
-                <br><br>
-                <label for="idade">Idade</label>
-                <input type="text" name="idade" placeholder="Insira a Idade:">
-                <br><br>
-                <hr>
-                
-                <button type="submit">Cadastrar</button>
-            </form>
-                   
-    </body>
+                            <table>
+                            {% for p in listagem %}
+                            <tr>
+                                <td>{{p.name}}</td>
+                                <td>{{p.idade}}</td>
+                                <td>lápis</td>
+                                <td>x</td>
+                            </tr>
+                            {% endfor %}
+                            </table>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
 
-    <script>
+    <h1>TESTE</h1>
 
-    </script>
+
+</body>
+
 </html>
