@@ -5,16 +5,13 @@
     bottom: 0;
     background: #88fa46;
     overflow-y: auto;
-    width: 300px;
+    width: 280px;
     transition: all ease 0.5s;
     padding: 0 15px;
-    z-index: 9999;
 }
 
-aside{
-    z-index: 9999;
-}
-
-h1{
+#mostrar{
+    position: relative;
     right: 0%;
+    
 }

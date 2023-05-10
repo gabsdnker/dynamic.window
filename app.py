@@ -27,6 +27,8 @@ def cadastrar():
     return redirect("/")
     #return 'Cadastro realizado com sucesso!'
 
+
+
 with app.app_context():
     db.create_all()
 
@@ -40,6 +42,7 @@ https://www.geeksforgeeks.org/how-to-list-tables-using-sqlite3-in-python/
 b) listar os nomes das tabelas
 c) ao clicar em um nome de tabela..... thcaram....
 d) verifica quais campos existem na tabela
+
 https://stackoverflow.com/questions/7831371/is-there-a-way-to-get-a-list-of-column-names-in-sqlite
 e) faz um "for" nesses campos
 f) cria uma caixa de texto (input) para cada campo
