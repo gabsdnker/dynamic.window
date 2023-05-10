@@ -1,9 +1,9 @@
-#header {
+.posicoes aside {
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-    background: #88fa46;
+    background: #109ea8;
     overflow-y: auto;
     width: 280px;
     transition: all ease 0.5s;
@@ -12,6 +12,9 @@
 
 #mostrar{
     position: relative;
-    right: 0%;
-    
+    left: 45%;
 }
+.posicoes #mostrar #titulos{
+    padding-right: 35px;
+}
+

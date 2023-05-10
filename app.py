@@ -13,10 +13,10 @@ class User(db.Model):
 
 @app.route('/')
 def index():
-
     dados = db.session.query(User).all() 
-    return render_template('index.html', listagem = dados)
+    return render_template('index.html', listagem=dados)
 
+# CREATE - Criação de um novo usuário
 @app.route('/cadastrar', methods=['POST'])
 def cadastrar():
     name = request.form['nome']
@@ -25,27 +25,32 @@ def cadastrar():
     db.session.add(user)
     db.session.commit()
     return redirect("/")
-    #return 'Cadastro realizado com sucesso!'
 
+# READ - Obtenção dos dados de todos os usuários
+@app.route('/ler')
+def ler():
+    dados = db.session.query(User).all()
+    return render_template('index.html', listagem=dados)
 
+# UPDATE - Atualização de dados de um usuário
+@app.route('/atualizar/<int:id>', methods=['POST'])
+def atualizar(id):
+    user = db.session.query(User).get(id)
+    user.name = request.form['nome']
+    user.idade = request.form['idade']
+    db.session.commit()
+    return redirect("/")
+
+# DELETE - Exclusão de um usuário
+@app.route('/excluir/<int:id>')
+def excluir(id):
+    user = db.session.query(User).get(id)
+    db.session.delete(user)
+    db.session.commit()
+    return redirect("/")
 
 with app.app_context():
     db.create_all()
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-'''
-a) ver como ler os nomes da tabela que existem em um banco de dados sqlite
-https://www.geeksforgeeks.org/how-to-list-tables-using-sqlite3-in-python/
-b) listar os nomes das tabelas
-c) ao clicar em um nome de tabela..... thcaram....
-d) verifica quais campos existem na tabela
-
-https://stackoverflow.com/questions/7831371/is-there-a-way-to-get-a-list-of-column-names-in-sqlite
-e) faz um "for" nesses campos
-f) cria uma caixa de texto (input) para cada campo
-assim eu montei o formulário genérico
-
-'''
