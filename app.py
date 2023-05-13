@@ -60,6 +60,13 @@ def excluir(id):
     db.session.commit()
     return redirect("/")
 
+@app.route('/tabelas')
+def tabelas():
+    tabelas = db.session.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
+    tabelas = [tabela[0] for tabela in tabelas]
+    return redirect('/')
+
+
 with app.app_context():
     db.create_all()
 

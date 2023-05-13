@@ -1,0 +1,41 @@
+.posicoes aside {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 290px;
+    background: #0d9ad1;
+    overflow-y: auto;
+    
+    transition: all ease 0.5s;
+   
+}
+
+#estilo{
+    margin-top: 3%;
+    text-align: center;
+    font-size: 35px;
+}
+#sub-titulo{
+    font-size: 20px;
+    margin-left: 5%;
+}
+
+.posicoes aside .campos-aside{
+    /* padding-right: 25px; */
+    margin-left: 8%;
+    display: block;
+}
+ 
+#window{
+    position: relative;
+    left: 55%;
+}
+
+.dropdown-content {
+    display: none;
+}
+
+.show{
+    display: inline-block;
+}
