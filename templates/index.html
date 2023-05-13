@@ -15,7 +15,7 @@
             <aside>
                 <h1 id="estilo">Dinamic Window</h1>
 
-                <h2 class="dropdown" id="sub-titulo">Criar Tabela</h2>
+                <h2 onclick="trocarImagem(this)" class="dropdown" id="sub-titulo">Criar Tabela<img id="imagem" src="../static/img/seta-direita.png" alt=""></h2>
                 <div class="dropdown-content">
                     <form action="/cadastrar" method="post">
                         <label class="campos-aside" for="tabela">Tabela:</label>
@@ -28,69 +28,81 @@
                         <br>
                         <input class="campos-aside" type="submit" value="Cadastrar">
                     </form>
-                </div>    
+                </div>
+                <h2 onclick="trocarImagem(this)" class="dropdown" id="sub-titulo">Editar dados<img id="imagem" src="../static/img/seta-direita.png" alt=""></h2>
+                <div class="dropdown-content">
+                    <form action="/editar" method="post">
+                        <label class="campos-aside" for="id-registro">ID:</label>
+                        <input class="campos-aside" type="text" name="id-registro" id="id-registro">
+                        <label class="campos-aside" for="nome-campo">Campo:</label>
+                        <input class="campos-aside" type="text" name="nome-campo" id="nome-campo">
+                        <label class="campos-aside" for="valor-campo">Valor:</label>
+                        <input class="campos-aside" type="text" name="valor-campo" id="valor-campo">
+                        <br>
+                        <input class="campos-aside" type="submit" value="Editar">
+                    </form>
+                </div>
+
+                
+                <h2 onclick="trocarImagem(this)" class="dropdown" id="sub-titulo">Atualizar<img id="imagem" src="../static/img/seta-direita.png" alt=""></h2>
+                <div class="dropdown-content">
+                    <form action="/atualizar" method="post">
+                        <label class="campos-aside" for="tabela-atualizar">Tabela:</label>
+                        <input class="campos-aside" type="text" name="tabela" id="tabela-atualizar">
+                        <label class="campos-aside" for="id-registro">ID:</label>
+                        <input class="campos-aside" type="text" name="id-registro" id="id-registro">
+                        {% for campo in campos %}
+                            <label class="campos-aside" for="{{ campo }}">{{ campo }}:</label>
+                            <input class="campos-aside" type="text" name="{{ campo }}" id="{{ campo }}"><br>
+                        {% endfor %}
+                        <input class="campos-aside" type="submit" value="Atualizar">
+                    </form>
+                </div>      
             </aside>
-            <div class="window">
-                <h2>Registros</h2>
-                <table>
-                    <thead>
+        </div>
+
+        <div class="container">
+            <h1 class="text-center">Registros</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        {% for campo in campos %}
+                            <th>{{ campo }}</th>
+                        {% endfor %}
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for registro in listagem %}
                         <tr>
-                            <th>ID</th>
+                            <td>{{ registro.id }}</td>
                             {% for campo in campos %}
-                                <th>{{ campo }}</th>
+                                <td>{{ getattr(registro, campo) }}</td>
                             {% endfor %}
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for registro in listagem %}
-                            <tr>
-                                <td>{{ registro.id }}</td>
-                                {% for campo in campos %}
-                                    <td>{{ getattr(registro, campo) }}</td>
-                                {% endfor %}
-                                <td>
+                            <td>
+                                <div class="btn-group" role="group">
                                     <form action="/atualizar/{{ registro.id }}" method="post">
                                         {% for campo in campos %}
-                                            <label for="{{ campo }}">{{ campo }}:</label>
-                                            <input type="text" name="{{ campo }}" id="{{ campo }}" value="{{ getattr(registro, campo) }}"><br>
+                                            <div class="form-group">
+                                                <label for="{{ campo }}">{{ campo }}:</label>
+                                                <input type="text" class="form-control" name="{{ campo }}" id="{{ campo }}" value="{{ getattr(registro, campo) }}">
+                                            </div>
                                         {% endfor %}
-                                        <input type="submit" value="Atualizar">
+                                        <button type="submit" class="btn btn-primary">Atualizar</button>
                                     </form>
                                     <form action="/excluir/{{ registro.id }}" method="get">
-                                        <input type="submit" value="Excluir">
+                                        <button type="submit" class="btn btn-danger">Excluir</button>
                                     </form>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>      
-        <script src="../staticrc/script.js"></script> 
-        <script>
-            // Seleciona todos os elementos com a classe "dropdown"
-            const dropdowns = document.querySelectorAll('.dropdown');
-        
-            // Adiciona um evento de clique para cada elemento com a classe "dropdown"
-            dropdowns.forEach((dropdown) => {
-                // Seleciona o elemento com a classe "dropdown-content"
-                const dropdownContent = dropdown.nextElementSibling;
-        
-                // Adiciona um evento de clique ao elemento com a classe "dropdown"
-                dropdown.addEventListener('click', () => {
-                    // Adiciona ou remove a classe "show" do elemento com a classe "dropdown-content"
-                    dropdownContent.classList.toggle('show');
-                });
-        
-                // Fecha o dropdown se o usuário clicar fora dele
-                window.addEventListener('click', (event) => {
-                    if (!event.target.matches('.dropdown')) {
-                        dropdownContent.classList.remove('show');
-                    }
-                });
-            });
-        </script>
-          
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+         
+        <script src="../static/script.js"></script> <!-- Referencia para arquivos js -->
+        <script src="../static/js/jquery-3.6.4.js"></script> <!-- Chamada de jQuery -->    
     </body>
 </html>
