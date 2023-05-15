@@ -48,7 +48,6 @@ def atualizar(id):
     # Atualiza os campos do registro
     for campo in request.form:
         setattr(registro, campo, request.form[campo])
-
     db.session.commit()
     return redirect("/")
 
@@ -64,7 +63,7 @@ def excluir(id):
 def tabelas():
     tabelas = db.session.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
     tabelas = [tabela[0] for tabela in tabelas]
-    return redirect('/')
+    return render_template('/', tabelas=tabelas)
 
 
 with app.app_context():
