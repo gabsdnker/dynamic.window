@@ -41,3 +41,17 @@ function trocarImagem(elemento) {
       imagem.src = "../static/img/seta-direita.png";
     }
 }
+
+s
+// menu
+function addField() {
+    var fieldContainer = document.createElement("div");
+    fieldContainer.innerHTML = `
+        <label for="campo">Field Name:</label>
+        <input type="text" name="campo[]" required>
+        <label for="valor">Field Value:</label>
+        <input type="text" name="valor[]" required>
+        <br>
+    `;
+    document.querySelector("form").appendChild(fieldContainer);
+}

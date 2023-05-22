@@ -11,97 +11,106 @@
         <title>Bem Vindo</title>
     </head>
     <body>
-        <div class="posicoes">   
-            <aside>
-                <h1 id="estilo">Dinamic Window</h1>
+        <aside>
+            <h1 id="estilo">Creating table</h1>
+            <nav id='sub-titulo' class="nav-menu">
+                <ul class="nav flex-column">
 
-                <h2 onclick="trocarImagem(this)" class="dropdown" id="sub-titulo">Criar Tabela<img id="imagem" src="../static/img/seta-direita.png" alt=""></h2>
-                <div class="dropdown-content">
-                    <form action="/cadastrar" method="post">
-                        <label class="campos-aside" for="tabela">Tabela:</label>
-                        <input class="campos-aside" type="text" name="tabela" id="tabela">
-                        <label class="campos-aside" for="campo">Campo:</label>
-                        <input class="campos-aside" type="text" name="campo" id="campo">
-                        <label class="campos-aside" for="valor">Valor:</label>
-                        <input class="campos-aside" type="text" name="valor" id="valor">
-                        <button class="campos-aside" type="button" onclick="addCampo()">+</button>
-                        <br>
-                        <input class="campos-aside" type="submit" value="Cadastrar">
-                    </form>
-                </div>
-                <h2 onclick="trocarImagem(this)" class="dropdown" id="sub-titulo">Editar dados<img id="imagem" src="../static/img/seta-direita.png" alt=""></h2>
-                <div class="dropdown-content">
-                    <form action="/editar" method="post">
-                        <label class="campos-aside" for="id-registro">ID:</label>
-                        <input class="campos-aside" type="text" name="id-registro" id="id-registro">
-                        <label class="campos-aside" for="nome-campo">Campo:</label>
-                        <input class="campos-aside" type="text" name="nome-campo" id="nome-campo">
-                        <label class="campos-aside" for="valor-campo">Valor:</label>
-                        <input class="campos-aside" type="text" name="valor-campo" id="valor-campo">
-                        <br>
-                        <input class="campos-aside" type="submit" value="Editar">
-                    </form>
-                </div>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#inicio">
+                            <img id="imagem" src="../static/img/seta-direita.png">Inicio</a>
+                    </li>
 
-                
-                <h2 onclick="trocarImagem(this)" class="dropdown" id="sub-titulo">Atualizar<img id="imagem" src="../static/img/seta-direita.png" alt=""></h2>
-                <div class="dropdown-content">
-                    <form action="/atualizar" method="post">
-                        <label class="campos-aside" for="tabela-atualizar">Tabela:</label>
-                        <input class="campos-aside" type="text" name="tabela" id="tabela-atualizar">
-                        <label class="campos-aside" for="id-registro">ID:</label>
-                        <input class="campos-aside" type="text" name="id-registro" id="id-registro">
-                        {% for campo in campos %}
-                            <label class="campos-aside" for="{{ campo }}">{{ campo }}:</label>
-                            <input class="campos-aside" type="text" name="{{ campo }}" id="{{ campo }}"><br>
-                        {% endfor %}
-                        <input class="campos-aside" type="submit" value="Atualizar">
-                    </form>
-                </div>      
-            </aside>
-        </div>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#criar">
+                            <img id="imagem" src="../static/img/seta-direita.png">Criar</a>
+                    </li>
 
-       <div class="container">
-            <h1 class="text-center">Registros</h1>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        {% for campo in campos %}
-                            <th>{{ campo }}</th>
-                        {% endfor %}
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for registro in listagem %}
-                        <tr>
-                            <td>{{ registro.id }}</td>
-                            {% for campo in campos %}
-                                <td>{{ getattr(registro, campo) }}</td>
-                            {% endfor %}
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <form action="/atualizar/{{ registro.id }}" method="post">
-                                        {% for campo in campos %}
-                                            <div class="form-group">
-                                                <label for="{{ campo }}">{{ campo }}:</label>
-                                                <input type="text" class="form-control" name="{{ campo }}" id="{{ campo }}" value="{{ getattr(registro, campo) }}">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#Editar">
+                            <img id="imagem" src="../static/img/seta-direita.png">Editar</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#Excluir">
+                            <img id="imagem" src="../static/img/seta-direita.png">Excluir</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#Atualizar">
+                            <img id="imagem" src="../static/img/seta-direita.png">Atualizar</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#consultar">
+                            <img id="imagem" src="../static/img/seta-direita.png">Consultar</a>
+                    </li>
+
+                </ul>
+            </nav>    
+        </aside>
+
+        <menu id="main">
+
+           
+            <section id="inicio" class="row m-0 p-0">
+                <div class="col-md-8 d-flex justify-content-center align-items-center flex-column">
+                    <p class="text-white">Bem-vindo ao Gerenciador CRUD!</p>
+                    <p class="text-white">Aqui você pode criar, ler, atualizar e excluir registros.</p>         
+                </div>                
+            </section>
+
+            <br>
+            <hr>
+            <br>
+            
+                <!-- section tables -->
+            <section id="criar" class="mt-5">
+                <div class="container pb-5 pt-5" >
+    
+                    <h2 class="pb-4">Criar</h2>
+    
+                                <div class="row row-cols-1 row-cols-md-3 g-4">
+                                    <div class="col">
+                                        <div class="card">
+                                                <h5 class="card-title">Aqui ira uma tabela</h5>
+                                                <p class="card-text">Aqui vira infos</p>
+                                                <div class="d-flex justify-content-center">
+                                             
                                             </div>
-                                        {% endfor %}
-                                        <button type="submit" class="btn btn-primary">Atualizar</button>
-                                    </form>
-                                    <form action="/excluir/{{ registro.id }}" method="get">
-                                        <button type="submit" class="btn btn-danger">Excluir</button>
-                                    </form>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card">
+                                                <h5 class="card-title">Aqui ira uma tabela</h5>
+                                                <p class="card-text">Aqui vira infos</p>
+                                                <div class="d-flex justify-content-center">
+                                             
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card">
+                                                <h5 class="card-title">Aqui ira uma tabela</h5>
+                                                <p class="card-text">Aqui vira infos</p>
+                                                <div class="d-flex justify-content-center">
+                                             
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-         
+    
+                            </div>
+
+                        </div>
+        
+                    </div>
+    
+                </div>
+            </section>
+
+        </menu>
+
         <script src="../static/script.js"></script> <!-- Referencia para arquivos js -->
         <script src="../static/js/jquery-3.6.4.js"></script> <!-- Chamada de jQuery -->    
     </body>

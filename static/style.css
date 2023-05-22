@@ -1,13 +1,13 @@
-.posicoes aside {
-    position: absolute;
+aside {
+    position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-    width: 270px;
+    width: 300px;
     margin-right: 0%;
-    background: #95cbe6;
+    background: #b1e5ee;
     overflow-y: auto;
-    
+    z-index: 9999;
     transition: all ease 0.5s;
    
 }
@@ -17,81 +17,59 @@
     text-align: center;
     font-size: 25px;  
     margin-bottom: 15%;
-    background-color: #50a2c2;
-    border-radius: 15px 15px 15px 15px;
-    box-shadow: 1px 1px 1px 1px;
+    background-color: #98deeb;
+   
     padding-top: 8%;
     padding-bottom: 8%;
-   
-    
-   
-
 }
 #sub-titulo{
     font-size: 20px;
     margin-left: 5%;
-    margin-right: 5%;
+    margin-right: 7%;
 }
 
-.posicoes aside .campos-aside{
-    /* padding-right: 25px; */
+aside .campos-aside{
     margin-left: 15%;
     display: block;
 }
- 
-.dropdown {
-    padding-left: 5%;
-    
-    margin-top: 10%;
-    cursor: pointer;
-    background-color: #50a2c2;
-    border-radius: 10px 10px 10px 10px; /* adiciona cantos arredondados de 10 pixels */
-    box-shadow: 0.5px 0.5px 0.5px 0.5px;
+
+.nav-link{
+    color: rgb(0, 0, 0);
 }
+
+
+.nav-link:hover{
+    background-color: #a6ecf8;
+    cursor: pointer;
+}
+
+
+
 #imagem{
-    width: 8%;
+    width: 7%;
     float: right;
-    margin-top: 1%;
+    margin-top: 2%;
 }
   
-.dropdown:hover {
-background-color: #66a8c2;
-box-shadow: 2.5px 2.5px 2.5px 2.5px;
+#main {
+    margin-left: 300px;
+    padding-left: 0%;
+    margin-top: 0%;
 }
 
-
-.dropdown-content {
-    display: none;
-}
-
-.show{
-    display: inline-block;
-}
-
-
-.window{
-    position: absolute;
+section#inicio {
+    background-image: url("./img/capa.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: relative;
+    background-position: center;
     
-    
-}
-
-.container {
-    margin-top: 20px;
-    margin-left: 270px;
-}
-
-.btn-group {
-    display: flex;
-}
-
-.btn-group form {
-    margin-right: 10px;
-}
-
-.form-group {
-    margin-bottom: 0;
-}
-
-input[type="text"] {
     width: 100%;
-}
+    height: 100vh;
+    }
+
+    section#inicio p {
+    font-size: 3rem;
+    padding-right: 0%;
+    }
+
