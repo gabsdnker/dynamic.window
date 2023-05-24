@@ -24,11 +24,11 @@ def index():
 def cadastrar():
     nome_tabela = request.form['tabela']
     campos = request.form.getlist('campo')
-    #valores = request.form.getlist('valor')
+    valores = request.form.getlist('valor')
 
     # Cria um novo registro na tabela especificada
     nova_tabela = type(nome_tabela, (GenericTable,), {})
-    #novo_registro = nova_tabela(**dict(zip(campos, valores)))
+    novo_registro = nova_tabela(**dict(zip(campos, valores)))
     db.session.add(novo_registro)
     db.session.commit()
 
