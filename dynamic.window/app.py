@@ -24,7 +24,7 @@ def index():
 def cadastrar():
     nome_tabela = request.form['tabela']
     campos = request.form.getlist('campo')
-    valores = request.form.getlist('valor')
+    valores = request.form.getlist('ID')
 
     # Cria um novo registro na tabela especificada
     nova_tabela = type(nome_tabela, (GenericTable,), {})
@@ -42,8 +42,8 @@ def ler():
 
 # UPDATE - Atualização de dados de um registro
 @app.route('/atualizar/<int:id>', methods=['POST'])
-def atualizar(id):
-    registro = db.session.query(GenericTable).get(id)
+def atualizar(Id):
+    registro = db.session.query(GenericTable).get(Id)
 
     # Atualiza os campos do registro
     for campo in request.form:
@@ -53,8 +53,8 @@ def atualizar(id):
 
 # DELETE - Exclusão de um registro
 @app.route('/excluir/<int:id>')
-def excluir(id):
-    registro = db.session.query(GenericTable).get(id)
+def excluir(Id):
+    registro = db.session.query(GenericTable).get(Id)
     db.session.delete(registro)
     db.session.commit()
     return redirect("/")

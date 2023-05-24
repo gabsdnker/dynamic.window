@@ -48,10 +48,11 @@
                         <input class="campos-aside" type="text" name="tabela" id="tabela-atualizar">
                         <label class="campos-aside" for="id-registro">ID:</label>
                         <input class="campos-aside" type="text" name="id-registro" id="id-registro">
-                        <!--{% for campo in campos %}-->
-                            <label class="campos-aside" for="{{ campo }}">Campo:</label>
-                            <input class="campos-aside" type="text" name="{{ campo }}" id="{{ campo }}"><br>
-                        <!--{% endfor %}(OBS:. Isto esta aparecendo no site, porém não pode)--> 
+                        {% for campo in campos %}
+                            <label class="campos-aside" for="nome-campo">Campo:</label>
+                            <input class="campos-aside" type="text" name="nome-campo" id="nome-campo"><br>
+                        {% endfor %}
+                        <br>
                         <input class="campos-aside" type="submit" value="Atualizar">
                     </form>
                 </div>      
@@ -64,20 +65,21 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <!--{% for campo in campos %}-->
-                            <th>Campo</th>
-                        <!--{% endfor %}-->
+                        {% for campo in campos %}
+                        <th>Campo</th>
+                        {% endfor %}
                         <th>Tabela</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
-                    <!--{% for registro in listagem %}-->
+                    {% for registro in listagem %}
                         <tr>
-                            <td>[ID de registro]</td>
-                            <!--{% for campo in campos %}-->
-                            <td>[Nome do campo]</td>
-                            <!--{% endfor %}-->
-                            <td>[Nome Tabela]</td>
+                            <td>{{ registro.id }}</td>
+                            {% for campo in campos %}
+                            <td>{{ getattr(registro, campo) }}</td>
+                            {% endfor %}
+                            <td>{{nova_tabela}}</td>
                             <td>
                                 <div class="btn-group" role="group">
                                     <form action="/excluir/{{ registro.id }}" method="get" id="button">
@@ -87,7 +89,7 @@
                                 </div>
                             </td>
                         </tr>
-                    <!--{% endfor %}-->
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
