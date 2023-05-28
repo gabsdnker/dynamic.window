@@ -29,8 +29,25 @@ function addField() {
         <label for="campo">Field Name:</label>
         <input type="text" name="campo[]" required>
         <label for="valor">Field Value:</label>
-        <input type="text" name="valor[]" required>
-        <br>
-    `;
+        <input type="text" name="valor[]" required><br>`;
     document.querySelector("form").appendChild(fieldContainer);
+}
+
+function adicionarCampo() {
+    var campoInput = document.createElement('input');
+    campoInput.type = 'text';
+    campoInput.name = 'campo[]';
+    campoInput.required = true;
+
+    var valorInput = document.createElement('input');
+    valorInput.type = 'text';
+    valorInput.name = 'valor[]';
+    valorInput.required = true;
+
+    var br = document.createElement('br');
+
+    var form = document.getElementsByTagName('form')[0];
+    form.insertBefore(campoInput, form.lastElementChild);
+    form.insertBefore(valorInput, form.lastElementChild);
+    form.insertBefore(br, form.lastElementChild);
 }

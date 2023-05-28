@@ -64,59 +64,61 @@
             <hr>
             <br>
             
-                <!-- section tables -->
+            <!-- section tables -->
             <section id="criar" class="mt-5">
-                <div class="container pb-5 pt-5" >
-    
-                    <h2 class="pb-4">Criar</h2>
-    
-                        <div class="row row-cols-1 row-cols-md-3 g-4">
-                            <div class="col">
-                                <div class="card">
-                                        <h5 class="card-title">Nome da tabela</h5>
-                                        <div class="d-flex justify-content-center">
-                                            <form action="/cadastrar" method="post">
-                                                <label class="campos-aside" for="tabela">Tabela:</label>
-                                                <input class="campos-aside" type="text" name="tabela" id="tabela">
-                                                <label class="campos-aside" for="campo">Campo:</label>
-                                                <input class="campos-aside" type="text" name="campo" id="campo">
-                                                <label class="campos-aside" for="valor">Valor:</label>
-                                                <input class="campos-aside" type="text" name="valor" id="valor">
-                                                <button class="campos-aside" type="button" onclick="addCampo()">+</button>
-                                                <input class="campos-aside" type="submit" value="Cadastrar">
-                                            </form>
-                                        </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card">
-                                        <h5 class="card-title">Aqui ira uma tabela</h5>
-                                        <p class="card-text">Aqui vira infos</p>
-                                        <div class="d-flex justify-content-center">
-                                            
-                                        </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card">
-                                        <h5 class="card-title">Aqui ira uma tabela</h5>
-                                        <p class="card-text">Aqui vira infos</p>
-                                        <div class="d-flex justify-content-center">
-                                        
-                                        </div>
+                <div class="container pb-5 pt-5" >   
+                    <h2 class="pb-4">Criar</h2>  
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <div class="col">
+                            <div class="card">
+                                <h5 class="card-title">Digite o nome:</h5>
+                             
+                                <div class="d-flex justify-content-center">
+                                    <form action="{{ url_for('create_table') }}" method="POST">
+                                        <input type="text" name="name" placeholder="Nome da tabela" required>
+                                        <button type="submit">Criar</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-
-                          
-
-                       
-        
+                        <div class="col">
+                            <div class="card">   
+                                <div class="d-flex justify-content-center">
+                                    <p>
+                                        # Crie sua tabela e organize seus dados.   
+                                    </p>
+                                </div>
+                            </div>
+                        </div>                       
                     </div>
-    
                 </div>
             </section>
 
+            <!-- section editar tabelas -->
+            <section id="Editar" class="mt-5">
+                <div class="container">
+                    <h2 class="pb-4">Editar</h2>
+                    <div class="row">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">                                 
+                                    <h2>Tables:</h2>
+                                    {% for table in tables %}
+                                        <div class="table-item {% if loop.index % 2 == 1 %}color1{% else %}color2{% endif %}">
+                                            <a href="{{ url_for('edit_table', table_id=table.id) }}">{{ table.name }}</a>
+                                            <form action="{{ url_for('delete_table', table_id=table.id) }}" method="post" style="display: inline;">
+                                                <button type="submit" onclick="return confirm('Are you sure you want to delete this table?')">Delete</button>
+                                            </form>
+                                        </div>
+                                    {% endfor %} 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+               
         </menu>
 
         <script src="../static/script.js"></script> <!-- Referencia para arquivos js -->

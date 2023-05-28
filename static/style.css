@@ -73,3 +73,39 @@ section#inicio {
     padding-right: 0%;
     }
 
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+  
+      th, td {
+        text-align: left;
+        padding: 8px;
+      }
+  
+      th {
+        background-color: #f2f2f2;
+      }
+  
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+#Editar{
+    background-color: #c9e2e6;
+}
+.table-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.color1 {
+    background-color: lightblue;
+}
+
+.color2 {
+    background-color: rgb(194, 219, 227);
+}
+

@@ -1,70 +1,83 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from builtins import getattr
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydb.db'
 db = SQLAlchemy(app)
 
-class GenericTable(db.Model):
-    __tablename__ = 'generic_table'
-    id = db.Column(db.Integer, primary_key=True)
 
-    def __init__(self, **kwargs):
-        for column, value in kwargs.items():
-            setattr(self, column, value)
+class Table(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    columns = db.relationship('Column', backref='table', cascade='all, delete-orphan')
+
+    def __repr__(self):
+        return f"<Table {self.name}>"
+
+
+class Column(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    table_id = db.Column(db.Integer, db.ForeignKey('table.id'))
+
+    def __repr__(self):
+        return f"<Column {self.name}>"
+
 
 @app.route('/')
 def index():
-    dados = db.session.query(GenericTable).all() 
-    return render_template('index.html', listagem=dados)
+    tables = Table.query.all()
+    return render_template('index.html', tables=tables)
 
-# CREATE - Criação de um novo registro
-@app.route('/cadastrar', methods=['POST'])
-def cadastrar():
-    nome_tabela = request.form['tabela']
-    campos = request.form.getlist('campo')
-    valores = request.form.getlist('valor')
 
-    # Cria um novo registro na tabela especificada
-    nova_tabela = type(nome_tabela, (GenericTable,), {})
-    novo_registro = nova_tabela(**dict(zip(campos, valores)))
-    db.session.add(novo_registro)
+@app.route('/create_table', methods=['GET', 'POST'])
+def create_table():
+    if request.method == 'POST':
+        name = request.form['name']
+        table = Table(name=name)
+        db.session.add(table)
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('create_table.html')
+
+
+@app.route('/edit_table/<int:table_id>', methods=['GET', 'POST'])
+def edit_table(table_id):
+    table = Table.query.get_or_404(table_id)
+    if request.method == 'POST':
+        table.name = request.form['name']
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('edit_table.html', table=table)
+
+
+@app.route('/delete_table/<int:table_id>', methods=['POST'])
+def delete_table(table_id):
+    table = Table.query.get_or_404(table_id)
+    db.session.delete(table)
     db.session.commit()
+    return redirect(url_for('index'))
 
-    return redirect("/")
 
-# READ - Obtenção dos dados de todos os registros
-@app.route('/ler')
-def ler():
-    dados = db.session.query(GenericTable).all()
-    return render_template('index.html', listagem=dados)
+@app.route('/add_column/<int:table_id>', methods=['GET', 'POST'])
+def add_column(table_id):
+    table = Table.query.get_or_404(table_id)
+    if request.method == 'POST':
+        name = request.form['name']
+        column = Column(name=name, table=table)
+        db.session.add(column)
+        db.session.commit()
+        return redirect(url_for('edit_table', table_id=table_id))
+    return render_template('add_column.html', table=table)
 
-# UPDATE - Atualização de dados de um registro
-@app.route('/atualizar/<int:id>', methods=['POST'])
-def atualizar(id):
-    registro = db.session.query(GenericTable).get(id)
 
-    # Atualiza os campos do registro
-    for campo in request.form:
-        setattr(registro, campo, request.form[campo])
+@app.route('/delete_column/<int:column_id>', methods=['POST'])
+def delete_column(column_id):
+    column = Column.query.get_or_404(column_id)
+    table_id = column.table.id
+    db.session.delete(column)
     db.session.commit()
-    return redirect("/")
-
-# DELETE - Exclusão de um registro
-@app.route('/excluir/<int:id>')
-def excluir(id):
-    registro = db.session.query(GenericTable).get(id)
-    db.session.delete(registro)
-    db.session.commit()
-    return redirect("/")
-
-@app.route('/tabelas')
-def tabelas():
-    tabelas = db.session.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
-    tabelas = [tabela[0] for tabela in tabelas]
-    return render_template('/', tabelas=tabelas)
-
+    return redirect(url_for('edit_table', table_id=table_id))
 
 with app.app_context():
     db.create_all()
