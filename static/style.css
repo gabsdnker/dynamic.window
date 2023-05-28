@@ -102,10 +102,22 @@ section#inicio {
 }
 
 .color1 {
-    background-color: lightblue;
+    background-color: #c9e2e6;
 }
 
 .color2 {
-    background-color: rgb(194, 219, 227);
+    background-color: #feffff;
 }
 
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
