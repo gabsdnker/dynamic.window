@@ -27,25 +27,11 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#Editar">
-                            <img id="imagem" src="../static/img/seta-direita.png">Editar</a>
+                        <a class="nav-link" href="#ver">
+                            <img id="imagem" src="../static/img/seta-direita.png">Ver</a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="#Excluir">
-                            <img id="imagem" src="../static/img/seta-direita.png">Excluir</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#Atualizar">
-                            <img id="imagem" src="../static/img/seta-direita.png">Atualizar</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#consultar">
-                            <img id="imagem" src="../static/img/seta-direita.png">Consultar</a>
-                    </li>
-
+                 
                 </ul>
             </nav>    
         </aside>
@@ -105,9 +91,9 @@
             </section>
 
             <!-- section editar tabelas -->
-            <section id="Editar" class="mt-5">
+            <section class="mt-5">
                 <div class="container">
-                    <h2 class="pb-4">Editar</h2>
+
                     <div class="row">
                         <div class="col">
                             <div class="card">
@@ -130,8 +116,28 @@
 
             <br><br><hr><br><br>
 
-            <section>
-                <a href="{{ url_for('show_tables') }}" class="btn">Ver Tabelas</a>
+            <section id="ver" class="mt-5">
+                <h2 class="pb-4">Ver</h2>
+                <hr>  
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="col">
+                        <div class="card">
+                            <div class="d-flex justify-content-center">
+                                <p>
+                                    Lorem ipsum interdum fusce lectus interdum ligula morbi cubilia fringilla, 
+                                    vel urna sociosqu taciti in aliquam per consectetur et placerat, pellentesque 
+                                    et vehicula elit dolor massa eleifend sem.  
+                                </p>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">  
+                            <a href="{{ url_for('show_tables') }}" class="btn">Ver Tabelas</a> 
+                            
+                        </div>
+                    </div>     
 
             </section>
 
