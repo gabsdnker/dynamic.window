@@ -17,28 +17,27 @@
                 <ul class="nav flex-column">
 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#inicio">
+                        <a class="nav-link active" href="#inicio">
                             <img id="imagem" src="../static/img/seta-direita.png">Inicio</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#criar">
+                        <a class="nav-link active" href="#criar">
                             <img id="imagem" src="../static/img/seta-direita.png">Criar</a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="#ver">
-                            <img id="imagem" src="../static/img/seta-direita.png">Ver</a>
+                    <li class="nav-item ">
+                        <a class="nav-link active" href="#ver">
+                            <img id="imagem" src="../static/img/seta-direita.png">Ver Tabelas</a>
                     </li>
 
-                 
+                    
+
                 </ul>
             </nav>    
         </aside>
 
-        <menu id="main">
-
-           
+        <menu id="main"> 
             <section id="inicio" class="row m-0 p-0">
                 <div class="col-md-8 d-flex justify-content-center align-items-center flex-column">
                     <p class="text-white">Bem-vindo ao Gerenciador CRUD!</p>
@@ -46,9 +45,7 @@
                 </div>                
             </section>
 
-            <br>
-            <hr>
-            <br>
+            <br><hr> <br>
             
             <!-- section tables -->
             <section id="criar" class="mt-5">
@@ -90,10 +87,10 @@
                 </div>
             </section>
 
-            <!-- section editar tabelas -->
-            <section class="mt-5">
+            <!-- section Que lista as tabelas -->
+            <section id="Editar" class="mt-5">
                 <div class="container">
-
+                
                     <div class="row">
                         <div class="col">
                             <div class="card">
@@ -103,7 +100,7 @@
                                         <div class="table-item {% if loop.index % 2 == 1 %}color1{% else %}color2{% endif %}">
                                             <a href="{{ url_for('edit_table', table_id=table.id) }}">{{ table.name }}</a>
                                             <form action="{{ url_for('delete_table', table_id=table.id) }}" method="post" style="display: inline;">
-                                                <button type="submit" onclick="return confirm('Tem certeza de que deseja excluir esta tabela?')">Delete</button>
+                                                <button type="submit" onclick="return confirm('Tem certeza que deseja excluir esta tabela?')">Delete</button>
                                             </form>
                                         </div>
                                     {% endfor %} 
@@ -114,30 +111,30 @@
                 </div>
             </section>
 
-            <br><br><hr><br><br>
+            <br><br>
 
-            <section id="ver" class="mt-5">
-                <h2 class="pb-4">Ver</h2>
-                <hr>  
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-                    <div class="col">
-                        <div class="card">
-                            <div class="d-flex justify-content-center">
-                                <p>
-                                    Lorem ipsum interdum fusce lectus interdum ligula morbi cubilia fringilla, 
-                                    vel urna sociosqu taciti in aliquam per consectetur et placerat, pellentesque 
-                                    et vehicula elit dolor massa eleifend sem.  
-                                </p>
+            <section id="ver">
+                <div class="container pb-5 pt-5" >   
+            
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <div class="col">
+                            <div class="card">
+                                <div class="d-flex justify-content-center">
+                                    <p>
+                                        Aqui vai um texto bem legal sobre a funcionalidade
+                                        do boton ao lado.   
+                                    </p>
+                                </div>
+                               
                             </div>
-                           
                         </div>
+                        <div class="col">                                                      
+                            <div class="d-flex justify-content-center">
+                                <a href="{{ url_for('show_tables') }}" class="btn">Ver Tabelas</a>
+                            </div>                               
+                        </div>                       
                     </div>
-                    <div class="col">
-                        <div class="card">  
-                            <a href="{{ url_for('show_tables') }}" class="btn">Ver Tabelas</a> 
-                            
-                        </div>
-                    </div>     
+                </div>
 
             </section>
 
