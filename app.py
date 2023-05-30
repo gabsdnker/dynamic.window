@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydb.db'
@@ -7,43 +8,12 @@ db = SQLAlchemy(app)
 
 
 
-"""A classe Table representa uma tabela no banco de dados. 
-Ela possui os seguintes atributos e propriedades:
 
-id:         ==> Identificador único da tabela (chave primária).
-name:       ==> Nome da tabela, armazenado como uma string.
-columns:    ==> Relacionamento um-para-muitos com a classe Column. 
-Essa propriedade define uma lista de colunas associadas à tabela.
-
-__repr__(): ==> Método especial que retorna uma representação textual da tabela, 
-no caso, a representação é uma string que contém o nome da tabela.
-
-Essa classe também é definida como um modelo no SQLAlchemy, permitindo que 
-seja mapeada para uma tabela no banco de dados. A relação entre a classe Table 
-e a classe Column é estabelecida por meio do atributo columns, que define um 
-relacionamento de um-para-muitos. Isso significa que uma tabela pode ter várias 
-colunas relacionadas a ela.
-
-A propriedade backref='table' especifica que cada objeto Column terá um atributo 
-adicional chamado table, que permite acessar a tabela à qual a coluna pertence.
-
-A propriedade lazy='dynamic' indica que o relacionamento será carregado de forma 
-dinâmica, permitindo que consultas adicionais sejam feitas na relação. Isso permite 
-que você consulte apenas as colunas de uma tabela conforme necessário, 
-em vez de carregá-las todas de uma vez.
-
-A propriedade cascade='all, delete-orphan' indica que a exclusão de uma tabela também 
-resultará na exclusão em cascata das colunas associadas. Ou seja, quando uma tabela é 
-excluída, todas as colunas relacionadas a ela também serão excluídas automaticamente.
-
-A classe Table é usada para representar as tabelas do banco de dados. Cada objeto Table 
-contém informações sobre o nome da tabela e as colunas associadas a ela. Essa estrutura 
-permite criar, editar e excluir tabelas, bem como manipular suas colunas e relacionamentos 
-com outras tabelas."""
 class Table(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
     columns = db.relationship('Column', backref='table', lazy='dynamic', cascade='all, delete-orphan')
+    rows = db.relationship('Row', backref='table', lazy='dynamic', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f"<Table {self.name}>"
@@ -81,22 +51,6 @@ class Column(db.Model):
 
 
 
-"""As classes "Row" e "Cell" são definidas como modelos no SQLAlchemy, permitindo que sejam 
-mapeadas para tabelas no banco de dados. A relação entre as classes Row e Cell é 
-estabelecida por meio das chaves estrangeiras row_id na classe Cell e table_id na 
-classe Row, que referenciam as respectivas chaves primárias nas tabelas relacionadas.
-
-Essas classes são usadas para representar a estrutura de uma tabela com linhas e células, 
-permitindo que os dados sejam armazenados e consultados de forma organizada."""
-
-"""A classe Row possui os seguintes atributos e propriedades:
-
-id: Identificador único da linha (chave primária).
-table_id: Chave estrangeira que faz referência à tabela à qual a linha pertence.
-cells: Relacionamento um-para-muitos com a classe Cell. 
-Essa propriedade define uma lista de células associadas à linha.
-__repr__(): Método especial que retorna uma representação textual da linha, 
-no caso, a representação é uma string que contém o ID da linha."""
 class Row(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     table_id = db.Column(db.Integer, db.ForeignKey('table.id'))
@@ -121,28 +75,7 @@ class Cell(db.Model):
 
     def __repr__(self):
         return f"<Cell {self.value}>"
-    
 
-
-"""Descrição: Adiciona uma nova linha a uma tabela específica.
-Funcionalidade:
-Obtém o objeto Table correspondente ao ID fornecido.
-Cria uma nova instância de Row relacionada à tabela.
-Adiciona a nova linha à sessão do banco de dados.
-Salva a sessão do banco de dados.
-Retorna os dados da nova linha em formato JSON."""
-@app.route('/add_row/<int:table_id>', methods=['POST'])
-def add_row(table_id):
-    table = Table.query.get_or_404(table_id)
-    row = Row(table=table)
-    db.session.add(row)
-    db.session.commit()
-
-    row_data = {
-        'rowId': row.id,
-        'rowNumber': len(table.rows)
-    }
-    return jsonify(row_data)
 
 
 """Renderiza a página inicial com a lista de tabelas existentes.
@@ -189,6 +122,7 @@ passando a tabela como argumento."""
 @app.route('/edit_table/<int:table_id>', methods=['GET', 'POST'])
 def edit_table(table_id):
     table = Table.query.get_or_404(table_id)
+    rows = Row.query.filter_by(table_id=table_id).all()
     if request.method == 'POST':
         table.name = request.form['name']
         db.session.commit()
@@ -249,6 +183,56 @@ def delete_column(column_id):
     db.session.commit()
     return redirect(url_for('edit_table', table_id=table_id))
 
+
+@app.route('/add_row/<int:table_id>', methods=['POST'])
+def add_row(table_id):
+    table = Table.query.get(table_id)
+
+    if table is None:
+        flash('Tabela não encontrada.', 'error')
+        return redirect(url_for('edit_table', table_id=table_id))
+
+    row = Row(table_id=table.id)
+    db.session.add(row)
+    db.session.commit()
+
+    flash('Linha adicionada com sucesso.', 'success')
+    return redirect(url_for('edit_table', table_id=table_id))
+
+@app.route('/delete_row/<int:row_id>', methods=['POST'])
+def delete_row(row_id):
+    row = Row.query.get(row_id)
+
+    if row is None:
+        flash('Linha não encontrada.', 'error')
+        return redirect(url_for('edit_table', table_id=row.table_id))
+
+    db.session.delete(row)
+    db.session.commit()
+
+    flash('Linha excluída com sucesso.', 'success')
+    return redirect(url_for('edit_table', table_id=row.table_id))
+
+
+@app.route('/add_cell/<int:table_id>/<int:column_id>/<int:row_id>', methods=['POST'])
+def add_cell(table_id, column_id, row_id):
+    column = Column.query.get_or_404(column_id)
+    row = Row.query.get_or_404(row_id)
+    value = request.form['value']
+    cell = Cell(column=column, row=row, value=value)
+    db.session.add(cell)
+    db.session.commit()
+    return redirect(url_for('edit_table', table_id=table_id))
+
+
+@app.route('/delete_cell/<int:table_id>/<int:column_id>/<int:row_id>', methods=['POST'])
+def delete_cell(table_id, column_id, row_id):
+    column = Column.query.get_or_404(column_id)
+    row = Row.query.get_or_404(row_id)
+    cell = Cell.query.filter_by(column=column, row=row).first()
+    db.session.delete(cell)
+    db.session.commit()
+    return redirect(url_for('edit_table', table_id=table_id))
 
 
 """Renderiza uma página com uma lista de todas as tabelas existentes.
