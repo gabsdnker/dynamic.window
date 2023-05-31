@@ -126,7 +126,7 @@ def edit_table(table_id):
     if request.method == 'POST':
         table.name = request.form['name']
         db.session.commit()
-        return redirect(url_for('index'))
+        return redirect(url_for('edit_table', table_id=table_id))
     return render_template('edit_table.html', table=table)
 
 
@@ -186,40 +186,44 @@ def delete_column(column_id):
 
 @app.route('/add_row/<int:table_id>', methods=['POST'])
 def add_row(table_id):
-    table = Table.query.get(table_id)
+    try:
+        table = Table.query.get_or_404(table_id)
 
-    if table is None:
-        flash('Tabela não encontrada.', 'error')
+        if table is None:
+            flash('Tabela não encontrada.', 'error')
+            return redirect(url_for('edit_table', table_id=table_id))
+
+        row = Row(table_id=table.id)
+        db.session.add(row)
+        db.session.commit()
+
         return redirect(url_for('edit_table', table_id=table_id))
-
-    row = Row(table_id=table.id)
-    db.session.add(row)
-    db.session.commit()
-
-    flash('Linha adicionada com sucesso.', 'success')
-    return redirect(url_for('edit_table', table_id=table_id))
+    except Exception as e:
+        return "Erro: "+str(e)
 
 @app.route('/delete_row/<int:row_id>', methods=['POST'])
 def delete_row(row_id):
-    row = Row.query.get(row_id)
-
-    if row is None:
-        flash('Linha não encontrada.', 'error')
-        return redirect(url_for('edit_table', table_id=row.table_id))
-
+    
+    row = Row.query.get_or_404(row_id)
     db.session.delete(row)
     db.session.commit()
 
-    flash('Linha excluída com sucesso.', 'success')
-    return redirect(url_for('edit_table', table_id=row.table_id))
+    if row is None:
+        flash('Linha não encontrada.', 'error')
+        return redirect(url_for('edit_table', row_id=row_id))
+
+ 
+
+    return redirect(url_for('edit_table', row_id=row_id))
+
 
 
 @app.route('/add_cell/<int:table_id>/<int:column_id>/<int:row_id>', methods=['POST'])
 def add_cell(table_id, column_id, row_id):
-    column = Column.query.get_or_404(column_id)
+    
     row = Row.query.get_or_404(row_id)
     value = request.form['value']
-    cell = Cell(column=column, row=row, value=value)
+    cell = Cell(row=row, value=value)
     db.session.add(cell)
     db.session.commit()
     return redirect(url_for('edit_table', table_id=table_id))
@@ -229,7 +233,7 @@ def add_cell(table_id, column_id, row_id):
 def delete_cell(table_id, column_id, row_id):
     column = Column.query.get_or_404(column_id)
     row = Row.query.get_or_404(row_id)
-    cell = Cell.query.filter_by(column=column, row=row).first()
+    cell = Cell.query.filter_by(row=row).first()
     db.session.delete(cell)
     db.session.commit()
     return redirect(url_for('edit_table', table_id=table_id))

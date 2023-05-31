@@ -39,8 +39,6 @@
             </div>
             
         </div>
-
-
         <br><br><hr>
 
         <!-- section de exibição das tabelas -->
@@ -77,7 +75,6 @@
                                 <td>
                                     <form action="{{ url_for('add_cell', table_id=table.id, row_id=row.id) }}" method="POST">
                                         <input type="text" name="value" value="{{ cell.value if cell else '' }}" required>
-                                    
                                     </form>
                                 </td>
                                 {% set found_cell = False %}
@@ -92,7 +89,6 @@
                                     </form>
                                 </td>
                             {% endif %}
-                            
                         {% endfor %}
                        <td>
                             <form action="{{ url_for('delete_row', table_id=table.id, row_id=row.id) }}" method="POST">
